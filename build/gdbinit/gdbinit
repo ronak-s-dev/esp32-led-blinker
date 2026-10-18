@@ -1,0 +1,2 @@
+source /home/roni_maverick/ESP-projects/blinker/build/gdbinit/symbols
+source /home/roni_maverick/ESP-projects/blinker/build/gdbinit/connect

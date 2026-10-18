@@ -1,0 +1,9 @@
+ ```gitignore
+   build/
+   managed_components/
+   .vscode/
+   .idea/
+   .DS_Store
+   Thumbs.db
+   *.log
+   ```

@@ -1,0 +1,2 @@
+source /home/roni_maverick/ESP-projects/blinker/build/bootloader/gdbinit/symbols
+source /home/roni_maverick/ESP-projects/blinker/build/bootloader/gdbinit/connect
