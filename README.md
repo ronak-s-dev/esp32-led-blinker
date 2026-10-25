@@ -1,176 +1,117 @@
-# ESP32 LED Blinker (ESP-IDF)
+# ESP32 GPIO Practice — ESP-IDF
 
-A beginner-friendly ESP-IDF project that blinks an external LED using an ESP32 GPIO pin. It is a small hands-on exercise in embedded C, GPIO outputs, delays, serial logging, and the ESP-IDF build/flash workflow.
+A hands-on learning project exploring GPIO programming on the ESP32 using the ESP-IDF framework and C. This repository develops the fundamentals needed for a future motorized turntable controller.
 
-## Features
+## Learning Progress
 
-- Prints a startup message to the serial monitor.
-- Configures GPIO18 as a digital output.
-- Blinks an external LED with approximately one second ON and one second OFF.
-- Prints a message after each blink cycle.
+### 1. LED Blinker
 
-This is a learning project and is not the final firmware for a motorized turntable.
+- Configure a GPIO pin as an output.
+- Control an LED using `gpio_set_level()`.
+- Introduce timing and delays with FreeRTOS.
+- Understand the ESP-IDF build, flash, and monitor workflow.
 
-## Hardware required
+### 2. Push Button Input
 
-- ESP32 development board compatible with the ESP-IDF `esp32` target
-- USB data cable
+- Configure a GPIO pin as an input.
+- Use the ESP32's internal pull-up resistor.
+- Read button states using `gpio_get_level()`.
+- Understand active-low logic: the button reads LOW when pressed and HIGH when released.
+
+### 3. Software Debouncing
+
+- Understand why mechanical switches can produce multiple transitions during a single press.
+- Use `esp_timer_get_time()` to measure elapsed time in microseconds.
+- Accept a new button state only after it remains unchanged for a defined debounce interval.
+
+### 4. Button-Controlled LED Toggle
+
+- Use the debounced button state to detect a press.
+- Maintain the LED state in a variable.
+- Toggle the LED ON or OFF once per confirmed press.
+
+## Hardware
+
+- ESP32 development board
 - Breadboard and jumper wires
-- One LED (a standard red LED is suitable)
-- 330 Ω series resistor
+- LED
+- 330 Ω current-limiting resistor
+- Momentary push button
 
 ## Wiring
 
-Disconnect USB power before changing the wiring.
+### LED — GPIO18
 
-1. Connect ESP32 GPIO18 to one end of the 330 Ω resistor.
-2. Connect the other end of the resistor to the LED anode (usually the longer leg).
-3. Connect the LED cathode (usually the shorter leg) to an ESP32 GND pin.
+Connect GPIO18 to a 330 Ω resistor, then to the LED's anode (long leg). Connect the LED's cathode (short leg) to GND.
 
-The resistor and LED can be swapped in order as long as they remain in the same series path. Ensure the LED legs are in separate electrically connected breadboard rows. Do not connect an LED directly between GPIO18 and GND without a current-limiting resistor.
+### Push Button — GPIO19
 
-## Software prerequisites
+Connect the push button between GPIO19 and GND. The program enables the internal pull-up resistor, so an external pull-up resistor is not required.
 
-- ESP-IDF installed and configured for the ESP32 target
-- Git (optional, for version control)
-- A serial terminal or the ESP-IDF monitor
+| Component     | ESP32 connection |
+| ------------- | ---------------- |
+| LED control   | GPIO18           |
+| Button input  | GPIO19           |
+| LED return    | GND              |
+| Button return | GND              |
 
-Follow Espressif's official ESP-IDF installation guide for your operating system:
-<https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/>
+## Software Requirements
 
-These instructions assume the ESP-IDF command `idf.py` is available in your terminal. Commands should be run from the project root, where the top-level `CMakeLists.txt` is located—not from inside `main/`.
+- ESP-IDF
+- ESP32 toolchain and build tools installed through ESP-IDF
+- USB data cable compatible with the development board
 
-## Build, flash, and monitor
+## Build, Flash, and Monitor
 
-### 1. Configure the target
+Open a terminal in the project root and activate your ESP-IDF environment if it is not already active.
 
-Run this once for a fresh project configuration:
+Set the target for a standard ESP32:
 
 ```bash
 idf.py set-target esp32
 ```
 
-### 2. Build
+Build the firmware:
 
 ```bash
 idf.py build
 ```
 
-### 3. Flash the firmware
-
-Replace `/dev/ttyUSB0` with the serial port for your board if it differs. On Windows, a COM port may be used instead; see the ESP-IDF documentation for the appropriate port syntax.
+Flash the firmware to the connected board (replace the port if necessary):
 
 ```bash
 idf.py -p /dev/ttyUSB0 flash
 ```
 
-### 4. Open the serial monitor
+Open the serial monitor:
 
 ```bash
 idf.py -p /dev/ttyUSB0 monitor
 ```
 
-Exit the monitor with `Ctrl+]`.
+Use `Ctrl+]` to exit the ESP-IDF monitor.
 
-### The difference between build, flash, and monitor
+## Concepts Practiced
 
-- **Build** compiles and links the source code into firmware artifacts.
-- **Flash** writes the firmware to the ESP32.
-- **Monitor** displays serial output; it does not compile or upload source changes.
+- C functions, variables, and conditional statements
+- GPIO input and output configuration
+- Digital HIGH and LOW states
+- Internal pull-up resistors
+- FreeRTOS task delays
+- Elapsed-time measurement
+- Mechanical switch debouncing
+- State tracking and toggle logic
+- ESP-IDF component dependencies and CMake configuration
+- Compiling, flashing, and debugging embedded firmware
 
-After editing the code, build and flash again before expecting the new firmware to run.
+## Project Goal
 
-## Project structure
+This project is part of a learning journey toward building a programmable motorized turntable. The next stages will introduce motor drivers, stepper motor control, speed measurement, and user-interface components.
 
-```text
-.
-├── CMakeLists.txt
-├── README.md
-├── main/
-│   ├── CMakeLists.txt
-│   └── blinker.c
-└── sdkconfig
-```
+## Safety
 
-ESP-IDF also generates a `build/` directory during compilation. It contains generated output and normally should not be committed to Git.
+Disconnect USB power before changing breadboard wiring. Always use a suitable series resistor with a bare LED, and never connect a motor directly to an ESP32 GPIO pin.
 
-### Component registration
+## License
 
-The `main/CMakeLists.txt` file should register the actual source filename and declare the GPIO driver dependency. For this project, it should be equivalent to:
-
-```cmake
-idf_component_register(
-    SRCS "blinker.c"
-    INCLUDE_DIRS "."
-    PRIV_REQUIRES esp_driver_gpio
-)
-```
-
-If your source file has a different name, update `SRCS` to match it.
-
-## Uploading the project to GitHub
-
-1. Create a new repository at <https://github.com/new>. Choose a repository name such as `esp32-led-blinker`.
-2. For a straightforward first push, create the remote repository without initializing it with a README, `.gitignore`, or license.
-3. In a terminal, change directory to this project's root.
-4. Add a `.gitignore` file:
-
-   ```gitignore
-   build/
-   managed_components/
-   .vscode/
-   .idea/
-   .DS_Store
-   Thumbs.db
-   *.log
-   ```
-
-5. Initialize Git and review the files before committing:
-
-   ```bash
-   git init
-   git add .
-   git status
-   git commit -m "Add ESP32 LED blinker"
-   ```
-
-6. Set the branch name and add the URL of the repository you created. Replace the example URL with your own:
-
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/YOUR-USERNAME/esp32-led-blinker.git
-   git push -u origin main
-   ```
-
-7. Follow GitHub's authentication prompts if asked. Do not put passwords or access tokens into source files or repository URLs.
-
-If `origin` already exists, inspect it with `git remote -v` instead of adding it again.
-
-For future changes:
-
-```bash
-git status
-git add main/blinker.c README.md
-git commit -m "Describe your change"
-git push
-```
-
-Review `git status` before each commit. Add other changed files intentionally as needed.
-
-## Troubleshooting
-
-- **`idf.py: command not found`:** ESP-IDF may not be activated in the current terminal. Follow the official installation guide for your operating system.
-- **CMake cannot find a source file:** Confirm the filename in `main/CMakeLists.txt` matches the actual file in `main/`.
-- **`driver/gpio.h` cannot be found:** Check the GPIO driver dependency in `main/CMakeLists.txt`. ESP-IDF component names and requirements can vary by ESP-IDF version.
-- **Serial port not found:** Check the USB cable, board connection, operating-system device list, and port permissions.
-- **LED does not blink:** Disconnect power and check LED polarity, the series resistor, the GND connection, the selected GPIO, and the build/flash steps.
-
-## What this project teaches
-
-- How `app_main()` serves as the ESP-IDF application entry point
-- How to configure a GPIO as an output
-- How to drive a pin HIGH and LOW
-- How to use `vTaskDelay(pdMS_TO_TICKS(1000))` for a one-second delay
-- How to distinguish source-code, build, flashing, wiring, and measurement issues
-
-Contributions and beginner-friendly improvements are welcome.
+Add a license if you intend to grant others permission to reuse, modify, and distribute this project.
