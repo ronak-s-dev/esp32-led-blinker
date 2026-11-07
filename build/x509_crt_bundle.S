@@ -1,4 +1,4 @@
-/* * Data converted from /home/roni_maverick/ESP-projects/motorized-turntable/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/roni_maverick/ESP-projects/blinker/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 #if !defined (__APPLE__) && !defined (__linux__)

@@ -10,18 +10,18 @@ if(NOT EXISTS "/home/roni_maverick/.espressif/v6.1/esp-idf/components/bootloader
   file(MAKE_DIRECTORY "/home/roni_maverick/.espressif/v6.1/esp-idf/components/bootloader/subproject")
 endif()
 file(MAKE_DIRECTORY
-  "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader"
-  "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix"
-  "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix/tmp"
-  "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix/src/bootloader-stamp"
-  "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix/src"
-  "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix/src/bootloader-stamp"
+  "/home/roni_maverick/ESP-projects/blinker/build/bootloader"
+  "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix"
+  "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix/tmp"
+  "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix/src/bootloader-stamp"
+  "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix/src"
+  "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "/home/roni_maverick/ESP-projects/blinker/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
 endif()
