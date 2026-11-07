@@ -1,9 +1,29 @@
- ```gitignore
-   build/
-   managed_components/
-   .vscode/
-   .idea/
-   .DS_Store
-   Thumbs.db
-   *.log
-   ```
+# ESP-IDF build output
+build/
+
+# ESP-IDF generated files
+sdkconfig.old
+dependencies.lock.tmp
+
+# Compiled binaries and object files
+*.o
+*.a
+*.elf
+*.bin
+*.hex
+*.map
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Editor and OS files
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

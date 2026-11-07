@@ -1,2 +1,2 @@
-source /home/roni_maverick/ESP-projects/blinker/build/gdbinit/symbols
-source /home/roni_maverick/ESP-projects/blinker/build/gdbinit/connect
+source /home/roni_maverick/ESP-projects/motorized-turntable/build/gdbinit/symbols
+source /home/roni_maverick/ESP-projects/motorized-turntable/build/gdbinit/connect

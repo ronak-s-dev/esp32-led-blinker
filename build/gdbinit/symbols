@@ -18,8 +18,8 @@ end
 
 # Load bootloader symbols
 set confirm off
-    add-symbol-file /home/roni_maverick/ESP-projects/blinker/build/bootloader/bootloader.elf
+    add-symbol-file /home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader/bootloader.elf
 set confirm on
 
 # Load application symbols
-file /home/roni_maverick/ESP-projects/blinker/build/hello_world.elf
+file /home/roni_maverick/ESP-projects/motorized-turntable/build/hello_world.elf

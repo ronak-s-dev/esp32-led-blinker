@@ -1,117 +1,141 @@
-# ESP32 GPIO Practice — ESP-IDF
+# Motorized Cake Decorating Turntable
 
-A hands-on learning project exploring GPIO programming on the ESP32 using the ESP-IDF framework and C. This repository develops the fundamentals needed for a future motorized turntable controller.
+An ESP32-based motorized turntable designed to make cake decorating more precise, consistent, and convenient.
 
-## Learning Progress
+The project aims to combine programmable rotational speed, smooth motor control, and a custom-built mechanical enclosure into a compact, aesthetically pleasing machine.
 
-### 1. LED Blinker
+**Status:** Under active development
 
-- Configure a GPIO pin as an output.
-- Control an LED using `gpio_set_level()`.
-- Introduce timing and delays with FreeRTOS.
-- Understand the ESP-IDF build, flash, and monitor workflow.
+## Project Goals
 
-### 2. Push Button Input
+The goal is to build a reliable motorized turntable suitable for small bakery and cake-decorating applications.
 
-- Configure a GPIO pin as an input.
-- Use the ESP32's internal pull-up resistor.
-- Read button states using `gpio_get_level()`.
-- Understand active-low logic: the button reads LOW when pressed and HIGH when released.
+Planned capabilities include:
 
-### 3. Software Debouncing
-
-- Understand why mechanical switches can produce multiple transitions during a single press.
-- Use `esp_timer_get_time()` to measure elapsed time in microseconds.
-- Accept a new button state only after it remains unchanged for a defined debounce interval.
-
-### 4. Button-Controlled LED Toggle
-
-- Use the debounced button state to detect a press.
-- Maintain the LED state in a variable.
-- Toggle the LED ON or OFF once per confirmed press.
+- Adjustable rotational speed from 1–100 RPM.
+- Clockwise and anticlockwise rotation.
+- Rotary encoder for speed selection.
+- Push-button start/stop control.
+- OLED display for speed and operating status.
+- Closed-loop speed regulation using a Hall-effect sensor.
+- Smooth, low-vibration operation under load.
+- Physical emergency stop.
+- Manual operation through a mechanical drive disengagement mechanism.
+- Custom-designed plywood enclosure and removable food-contact platter.
 
 ## Hardware
 
-- ESP32 development board
-- Breadboard and jumper wires
-- LED
-- 330 Ω current-limiting resistor
-- Momentary push button
+The project uses an ESP32 microcontroller as its central controller.
 
-## Wiring
+| Component | Purpose |
+|---|---|
+| ESP32 DevKit V1 | Main controller |
+| EC11 rotary encoder | Speed selection and user input |
+| SSD1306 OLED (128×64) | User interface |
+| TMC2209 stepper driver | Stepper motor control |
+| Bipolar stepper motor | Rotational drive |
+| A3144 Hall-effect sensor | Rotational speed feedback |
+| 24V DC power supply | Main motor power |
+| Buck converter | Regulated 5V supply for control electronics |
 
-### LED — GPIO18
+*Some components are planned for later integration and have not yet been implemented.*
 
-Connect GPIO18 to a 330 Ω resistor, then to the LED's anode (long leg). Connect the LED's cathode (short leg) to GND.
+## Firmware
 
-### Push Button — GPIO19
+The firmware is being developed using **ESP-IDF 6.1** in C.
 
-Connect the push button between GPIO19 and GND. The program enables the internal pull-up resistor, so an external pull-up resistor is not required.
-
-| Component     | ESP32 connection |
-| ------------- | ---------------- |
-| LED control   | GPIO18           |
-| Button input  | GPIO19           |
-| LED return    | GND              |
-| Button return | GND              |
-
-## Software Requirements
-
+Development environment:
+- ESP32 DevKit V1
 - ESP-IDF
-- ESP32 toolchain and build tools installed through ESP-IDF
-- USB data cable compatible with the development board
+- C programming language
+- FreeRTOS
+- Visual Studio Code alternative: Zed Editor
+- Debian on WSL2
 
-## Build, Flash, and Monitor
+### Current Development Progress
 
-Open a terminal in the project root and activate your ESP-IDF environment if it is not already active.
+- [x] ESP-IDF installation and project setup.
+- [x] GPIO output control.
+- [x] LED blinking using FreeRTOS delays.
+- [x] Push-button input using internal pull-up resistors.
+- [x] Software debouncing using elapsed-time measurement.
+- [x] Button-controlled LED toggle.
+- [x] Rotary encoder GPIO configuration.
+- [x] Quadrature encoder state detection.
+- [x] Direction detection using a 4×4 lookup table.
+- [x] Encoder transition counting.
+- [x] RPM selection logic using encoder detents.
+- [x] Target RPM boundaries (0–100).
 
-Set the target for a standard ESP32:
+### Upcoming Development
 
-```bash
-idf.py set-target esp32
+- [ ] Encoder push-button start/stop functionality.
+- [ ] SSD1306 OLED integration.
+- [ ] Stepper motor and TMC2209 integration.
+- [ ] Stepper motor speed control.
+- [ ] Hall-effect sensor integration.
+- [ ] Closed-loop RPM regulation.
+- [ ] Emergency stop implementation.
+- [ ] Mechanical drive disengagement.
+- [ ] Final firmware and hardware integration.
+
+## Mechanical Design
+
+The mechanical assembly is planned around a large rotating platter supported by a suitable bearing and driven through a timing-belt transmission.
+
+Design priorities include:
+
+- Stable support for cakes weighing approximately 10 kg.
+- Minimal platter wobble and rotational runout.
+- Low vibration at slow rotational speeds.
+- Adjustable belt tension.
+- Mechanical disengagement for manual operation.
+- Removable, food-safe platter.
+- An elegant enclosure inspired by premium audio turntables.
+
+CAD models, 3D-printed components, and plywood enclosure designs will be added as development progresses.
+
+## Safety Considerations
+
+Safety is an important part of the design.
+
+Planned provisions include:
+
+- A physical emergency stop that independently interrupts motor power.
+- Appropriate electrical protection and fusing.
+- Separation of food-contact surfaces from the wooden enclosure.
+- Secure mounting of rotating mechanical components.
+- Testing under progressively increasing loads before regular use.
+
+## Project Structure
+
+```text
+motorized-turntable/
+├── firmware/       # ESP32 firmware
+├── electronics/    # Circuit diagrams and wiring
+├── mechanical/     # CAD and fabrication files
+├── docs/           # Architecture and development notes
+└── README.md
 ```
 
-Build the firmware:
+The repository will evolve as the project progresses.
 
-```bash
-idf.py build
-```
+## Learning and Development
 
-Flash the firmware to the connected board (replace the port if necessary):
+This project is also an opportunity to explore embedded systems and mechanical design through practical implementation.
 
-```bash
-idf.py -p /dev/ttyUSB0 flash
-```
+Key learning areas include:
 
-Open the serial monitor:
-
-```bash
-idf.py -p /dev/ttyUSB0 monitor
-```
-
-Use `Ctrl+]` to exit the ESP-IDF monitor.
-
-## Concepts Practiced
-
-- C functions, variables, and conditional statements
-- GPIO input and output configuration
-- Digital HIGH and LOW states
-- Internal pull-up resistors
-- FreeRTOS task delays
-- Elapsed-time measurement
-- Mechanical switch debouncing
-- State tracking and toggle logic
-- ESP-IDF component dependencies and CMake configuration
-- Compiling, flashing, and debugging embedded firmware
-
-## Project Goal
-
-This project is part of a learning journey toward building a programmable motorized turntable. The next stages will introduce motor drivers, stepper motor control, speed measurement, and user-interface components.
-
-## Safety
-
-Disconnect USB power before changing breadboard wiring. Always use a suitable series resistor with a bare LED, and never connect a motor directly to an ESP32 GPIO pin.
+- Embedded C and ESP-IDF.
+- GPIO, digital inputs, and hardware interfaces.
+- Rotary encoder quadrature decoding.
+- FreeRTOS task scheduling.
+- Stepper motor control and driver configuration.
+- Sensor feedback and closed-loop control.
+- CAD and 3D printing.
+- Mechanical transmission design.
+- Fabrication and enclosure construction.
 
 ## License
 
-Add a license if you intend to grant others permission to reuse, modify, and distribute this project.
+To be determined.

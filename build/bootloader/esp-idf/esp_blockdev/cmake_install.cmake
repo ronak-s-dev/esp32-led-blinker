@@ -40,6 +40,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/roni_maverick/ESP-projects/blinker/build/bootloader/esp-idf/esp_blockdev/install_local_manifest.txt"
+  file(WRITE "/home/roni_maverick/ESP-projects/motorized-turntable/build/bootloader/esp-idf/esp_blockdev/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
